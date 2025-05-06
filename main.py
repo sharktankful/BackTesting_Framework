@@ -7,11 +7,12 @@ from Utilities import utils
 def main():
     stock = input('Enter a stock name: ')
     amount = float(input('Enter stock spending amount: '))
+    years = int(input('Enter number of years measured: '))
     short = int(input('Enter short term average (Days): '))
     long = int(input('Enter long term average (Days): '))
 
     # DOWNLOAD THE STOCK DATA
-    data = yf.download(stock, period='1y', interval='1d')
+    data = yf.download(stock, period=f'{years}y', interval='1d')
 
     # RUN STRATEGY
     strategy = moving_average.run(data, amount, short, long)
