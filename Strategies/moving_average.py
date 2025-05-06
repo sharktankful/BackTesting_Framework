@@ -3,12 +3,14 @@ import numpy as np
 
 def run(data: pd.DataFrame, amount: int, short: int, long: int):
     # short and long term moving averages
-    data['20MA'] = data['Close'].rolling(window=short).mean()
-    data['50MA'] = data['Close'].rolling(window=long).mean()
+    short_desc, long_desc = f'{short}MA', f'{long}MA'
+     
+    data[short_desc] = data['Close'].rolling(window=short).mean()
+    data[long_desc] = data['Close'].rolling(window=long).mean()
 
     # Signal for moving Strategy
-    data['Signal'] = np.where(data['20MA'] > data['50MA'], 1, 0) # 1 = BUY if short MA is greater than long MA
-    data['Signal'] = np.where(data['20MA'] < data['50MA'], -1, data['Signal']) # -1 = SELL if short MA is less than long MA. 0 = HOLD
+    data['Signal'] = np.where(data[short_desc] > data[long_desc], 1, 0) # 1 = BUY if short MA is greater than long MA
+    data['Signal'] = np.where(data[short_desc] < data[long_desc], -1, data['Signal']) # -1 = SELL if short MA is less than long MA. 0 = HOLD
 
     # Position for if I currently bought, sold, or hold the stock
     data['Position'] = data['Signal'].shift(1)
@@ -31,7 +33,7 @@ def run(data: pd.DataFrame, amount: int, short: int, long: int):
 
 
     # Return the data
-    return data[['Close', 'Signal', 'Position', 'Return', 'Strategy_Return', 'Market_Value', 'Portfolio_Value']]
+    return data[['Close', short_desc, long_desc, 'Signal', 'Position', 'Return', 'Strategy_Return', 'Portfolio_Value', 'Market_Value']]
 
 
 

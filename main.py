@@ -1,19 +1,42 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
 from Strategies import moving_average
+from Utilities import utils
 
 
 def main():
     stock = input('Enter a stock name: ')
     amount = float(input('Enter stock spending amount: '))
-    short = int(input('Enter short term value: '))
-    long = int(input('Enter long term value: '))
+    short = int(input('Enter short term average: '))
+    long = int(input('Enter long term average: '))
 
     # DOWNLOAD THE STOCK DATA
     data = yf.download(stock, period='1y', interval='1d')
 
     # RUN STRATEGY
     strategy = moving_average.run(data, amount, short, long)
+
+    # SHOWS LAST FEW ROWS
+    print(strategy.tail())
+
+
+
+    # Downloads Strategy to CSV_Files Folder
+    while True:
+        user_input = input("=============\nDo you want to save the results to a CSV? (y/n): ").strip()
+
+        if user_input == 'y':
+            csv_title = input("=============\nEnter a name for your CSV File: ")
+            utils.download_csv(strategy, csv_title)
+            print(f"=============\nFile saved as {csv_title}!\nLocation Saved: 'data/{csv_title}'\n=============")
+            break
+        elif user_input == 'n':
+            break
+        else:
+            print("=============\nNot valid input, enter (y/n).")
+
+
+
 
     # Generates plot chart, compares market vs startegy
     plt.figure(figsize=(12, 6))
@@ -35,9 +58,6 @@ def main():
     plt.legend()  # Shows which line is which
     plt.grid()  # Adds grid lines
     plt.show()  # Displays chart
-
-    # SHOWS LAST FEW ROWS
-    print(strategy.tail())
 
 
 if __name__ == "__main__":
