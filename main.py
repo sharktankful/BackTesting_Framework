@@ -7,8 +7,8 @@ from Utilities import utils
 def main():
     stock = input('Enter a stock name: ')
     amount = float(input('Enter stock spending amount: '))
-    short = int(input('Enter short term average: '))
-    long = int(input('Enter long term average: '))
+    short = int(input('Enter short term average (Days): '))
+    long = int(input('Enter long term average (Days): '))
 
     # DOWNLOAD THE STOCK DATA
     data = yf.download(stock, period='1y', interval='1d')
