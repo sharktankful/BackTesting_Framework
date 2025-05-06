@@ -194,4 +194,3 @@ pyrightconfig.json
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/python,visualstudiocode
-Strategies/__pycache__/moving_average.cpython-313.pyc
